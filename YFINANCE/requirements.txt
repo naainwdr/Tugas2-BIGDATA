@@ -1,0 +1,5 @@
+yfinance
+pymongo
+pyspark
+fastapi
+uvicorn
