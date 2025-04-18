@@ -7,6 +7,7 @@ LAPORAN INGESTION DATA IDX
 LAPORAN INGESTION DATA BERITA IQPLUS
 ---
 Dalam proyek ini, kami membuat program untuk menyederhanakan isi berita saham ke dalam format 5W+1H (What, Who, When, Where, Why, How) dengan bantuan Python, MongoDB, dan Apache Spark. Tujuannya agar informasi penting dari berita lebih mudah dipahami dan diolah. Langkah-langkah Utama:
+
 ---
 1. Mengambil Data dari MongoDB
 - Kami mengambil berita dari dua koleksi yaitu stock_news di database stock_news_db dan market_news di database market_news_db
