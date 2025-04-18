@@ -2,30 +2,43 @@
 
 LAPORAN INGESTION DATA BERITA IQPLUS
 ---
-Dalam proyek ini, kami menggunakan pendekatan NLP (Natural Language Processing) untuk mengekstraksi informasi penting dari berita saham yang disimpan di MongoDB. Kami memanfaatkan Python dengan library pymongo untuk mengakses data dan menggunakan regex untuk ekstraksi informasi 5W+1H (What, Who, When, Where, Why, How).
+Dalam proyek ini, kami membuat program untuk menyederhanakan isi berita saham ke dalam format 5W+1H (What, Who, When, Where, Why, How) dengan bantuan Python, MongoDB, dan Apache Spark. Tujuannya agar informasi penting dari berita lebih mudah dipahami dan diolah. Langkah-langkah Utama:
 
 ---
-1. Konfigurasi MongoDB:
-- Menghubungkan ke MongoDB untuk mengambil data dari koleksi stock_news dan market_news.
+1. Mengambil Data dari MongoDB
+---
+Kami mengambil berita dari dua koleksi:
+- stock_news di database stock_news_db
+- market_news di database market_news_db
 
-2. Ekstraksi Informasi 5W+1H:
+2. Ekstraksi Informasi 5W+1H
+Kami menggunakan fungsi summarize_5w1h() untuk mengekstrak:
 
-WHO (Siapa): Menemukan kode saham, nama perusahaan, dan narasumber menggunakan kata kunci seperti "Tbk", "menurut", "Direktur".
+Who: Nama perusahaan, kode saham, atau narasumber seperti direktur, CEO, dll.
 
-WHAT (Apa): Mencari informasi kinerja, laba, penjualan menggunakan kata kunci seperti "laba", "penjualan", "kinerja".
+What: Informasi kinerja perusahaan (laba, pendapatan, penjualan, dll).
 
-WHEN (Kapan): Mendeteksi waktu dengan kata kunci seperti "pada", bulan, tahun, atau kuartal.
+When: Waktu kejadian (bulan, tahun, kuartal).
 
-WHERE (Di mana): Menemukan lokasi menggunakan kata seperti "berlokasi di", "kantor di".
+Where: Lokasi atau kantor perusahaan.
 
-WHY (Mengapa): Menyimpulkan alasan menggunakan kata seperti "karena", "dipengaruhi".
+Why: Alasan di balik suatu peristiwa (penyebab kenaikan/penurunan).
 
-HOW (Bagaimana): Mengidentifikasi strategi atau cara dengan kata seperti "melalui", "strategi", "upaya".
+How: Strategi atau cara perusahaan mencapai sesuatu.
 
-Penyimpanan Hasil:
+Ekstraksi dilakukan dengan pola kata kunci sederhana menggunakan library re (Regular Expression).
 
-Berita yang berhasil diringkas disimpan dalam koleksi baru di MongoDB dan file JSON sebagai backup.
+3. Pemrosesan dengan Apache Spark
+Berita dimuat ke dalam Spark DataFrame, lalu fungsi summarize_5w1h() dijalankan sebagai User Defined Function (UDF) agar bisa diproses secara paralel dan cepat dalam skala besar.
 
-Program otomatis mencetak jumlah berita yang berhasil diringkas.
+4. Menyimpan Hasil ke MongoDB
+Hasil ekstraksi disimpan ke dua koleksi baru:
 
-Kesimpulan: Kami memilih NLP untuk ekstraksi informasi karena teks berita bebas dan tidak terstruktur, yang lebih cocok untuk diproses dengan NLP, dibandingkan dengan Spark yang lebih cocok untuk data terstruktur.
+transformed_stock_news
+
+transformed_market_news
+
+Setiap data hasil ekstraksi mencakup elemen 5W+1H, judul asli, dan ID berita.
+
+5. Output ke Terminal
+Program akan menampilkan berapa banyak berita yang berhasil diproses saat dijalankan.
